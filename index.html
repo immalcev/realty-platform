@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Платформа Недвижимости РФ & Лидогенерация</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-black text-blue-600 tracking-wider">MACE</span>
+                <span class="text-sm font-semibold bg-slate-100 px-2 py-1 rounded text-slate-600">REALTY</span>
+            </div>
+            <nav class="hidden md:flex space-x-6 font-medium text-slate-600">
+                <a href="#novostroy" class="hover:text-blue-600 transition">Новостройки РФ</a>
+                <a href="#publish" class="hover:text-blue-600 transition">Разместить объект</a>
+                <a href="#agent" class="hover:text-blue-600 transition">Найти Агента</a>
+            </nav>
+            <button class="bg-slate-900 text-white px-4 py-2 rounded-lg font-medium hover:bg-slate-800 transition text-sm">
+                Войти через TG
+            </button>
+        </div>
+    </header>
+
+    <section class="max-w-7xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center">
+        <div>
+            <h1 class="text-4xl md:text-6xl font-black text-slate-900 leading-tight mb-6">
+                Умный поиск и продажа недвижимости по <span class="text-blue-600">всей России</span>
+            </h1>
+            <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+                Подобрать идеальную новостройку от девелопера без комиссии, сдать или продать квартиру через автоматизированную систему лидогенерации.
+            </p>
+            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#novostroy" class="bg-blue-600 text-white text-center px-6 py-4 rounded-xl font-bold shadow-lg shadow-blue-600/30 hover:bg-blue-700 transition">
+                    Подобрать новостройку (Бесплатно)
+                </a>
+                <a href="#publish" class="bg-white text-slate-950 text-center px-6 py-4 rounded-xl font-bold border border-slate-200 hover:border-slate-400 transition">
+                    Сдать / Продать жилье
+                </a>
+            </div>
+        </div>
+        <div class="bg-gradient-to-tr from-blue-600 to-indigo-900 h-80 md:h-[450px] rounded-3xl shadow-2xl flex items-center justify-center text-white p-8 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div class="text-center z-10">
+                <p class="text-sm uppercase tracking-widest text-blue-200 mb-2 font-bold">Интеграция систем</p>
+                <p class="text-2xl md:text-3xl font-bold">Синхронизация с закрытыми базами данных и TG-ботом</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="novostroy" class="bg-white py-16 border-t border-b border-slate-100">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Подбор новостроек по России</h2>
+                <p class="text-slate-500">Заполните параметры, и наш бот пришлет интерактивную подборку напрямую от девелоперов</p>
+            </div>
+            <form id="leadForm" class="space-y-6 bg-slate-50 p-8 rounded-2xl border border-slate-200">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">В каком городе ищете квартиру?</label>
+                    <select class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" id="target_city">
+                        <option>Ростов-на-Дону</option>
+                        <option>Москва</option>
+                        <option>Санкт-Петербург</option>
+                        <option>Краснодар</option>
+                        <option>Сочи</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Ваш бюджет (руб)</label>
+                        <input type="text" placeholder="например, 4 000 000" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" id="budget">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Ваше имя</label>
+                        <input type="text" placeholder="Иван" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" id="client_name">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Телефон для связи в Telegram</label>
+                    <input type="tel" placeholder="+7 (999) 000-00-00" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" id="client_phone">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition">
+                    Получить закрытый каталог в Telegram
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('leadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                target_city: document.getElementById('target_city').value,
+                budget: document.getElementById('budget').value,
+                name: document.getElementById('client_name').value,
+                phone: document.getElementById('client_phone').value
+            };
+            
+            // Отправляем на наш будущий бэкенд
+            const response = await fetch('http://localhost:3000/api/new-lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            if(response.ok) {
+                alert('Заявка принята! Бот уже формирует подборку.');
+            }
+        });
+    </script>
+</body>
+</html>s
