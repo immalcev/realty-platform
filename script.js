@@ -1,38 +1,57 @@
-// 1. Укажи сюда РЕАЛЬНЫЙ URL твоего Worker'а (посмотри его в панели Cloudflare)
-const WORKER_URL = 'https://macler-backend.immalcev17.workers.dev/'; 
+// Автоматически заполняем скрытое поле из URL при загрузке страницы
+window.onload = () => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    if (ref) document.getElementById('ref_code').value = ref;
+};
 
 document.getElementById('leadForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // Получаем ref-код из URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const refCode = urlParams.get('ref') || 'direct';
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.innerText = 'Отправка...';
+    submitBtn.disabled = true;
 
     // Собираем данные
-    const data = {
-        name: document.getElementById('client_name').value, // Убедись, что ID совпадают с HTML
-        phone: document.getElementById('client_phone').value,
-        time: document.getElementById('timeSlot')?.value || '10:00', 
-        ref: refCode
-    };
+    const city = document.getElementById('target_city').value;
+    const budget = document.getElementById('budget').value;
+    const name = document.getElementById('client_name').value;
+    const phone = document.getElementById('client_phone').value;
+    const refCode = document.getElementById('ref_code').value || 'Прямой заход';
+
+    // Формируем ОДНУ переменную сообщения
+    const textMessage = `🔥 **НОВАЯ ЗАЯВКА С САЙТА MACLER RUSSIA** 🔥\n\n` +
+                        `🏢 **Город:** ${city}\n` +
+                        `💰 **Бюджет:** ${budget} руб.\n` +
+                        `👤 **Имя клиента:** ${name}\n` +
+                        `📞 **Контакты:** ${phone}\n` +
+                        `🔗 **Источник (реф):** ${refCode}`;
+
+    const BOT_TOKEN = '8962569966:AAFBBG8G64sWxZjoLrR5RWimTWjNtIGPpMA'; 
+    const CHAT_ID = '803182963'; 
 
     try {
-        console.log("Отправляю:", data); // Смотри это в консоли F12
-
-        const response = await fetch(WORKER_URL, {
+        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: textMessage,
+                parse_mode: 'Markdown'
+            })
         });
 
         if (response.ok) {
-            alert('Спасибо! Мы ждем вас в офисе.');
+            alert('Заявка принята! Менеджер свяжется с вами в Telegram.');
             document.getElementById('leadForm').reset();
         } else {
-            throw new Error('Ошибка сервера: ' + response.status);
+            throw new Error('Ошибка Telegram API');
         }
-    } catch (err) {
-        console.error("Ошибка:", err);
-        alert('Не удалось отправить. Проверь консоль (F12).');
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Не удалось отправить заявку. Проверьте соединение.');
+    } finally {
+        submitBtn.innerText = 'Получить закрытый каталог в Telegram';
+        submitBtn.disabled = false;
     }
 });
